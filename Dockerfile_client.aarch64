@@ -9,7 +9,7 @@ WORKDIR /app
 
 RUN GOPROXY="https://goproxy.io" GO111MODULE=on GOOS=linux GOARCH=arm go build -ldflags "-s -w" -o bin/linux/dtunnel client.go
 
-FROM alpine
+FROM arm64v8/alpine
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk update \
     && apk add -U tzdata \
