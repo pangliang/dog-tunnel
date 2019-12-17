@@ -7,12 +7,12 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 ADD . /app
 WORKDIR /app
 
-RUN GOPROXY="https://goproxy.io" GO111MODULE=on GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o bin/linux/dtunnel client.go
+RUN GOPROXY="https://goproxy.io" GO111MODULE=on go build -ldflags "-s -w" -o bin/linux/dtunnel client.go
 
 FROM alpine
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk update \
-    && apk add -U tzdata \
+    && apk add tzdata \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 COPY --from=builder /app/bin/linux/dtunnel /dtunnel
 CMD [ "/dtunnel" ]
